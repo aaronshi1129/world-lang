@@ -81,8 +81,7 @@ const sentences = [
   { "sentence": "Sabai di mai?", "answers": ["Lao"] },
   { "sentence": "Apa kabar?", "answers": ["Indonesian"] },
   { "sentence": "Eyi be sɔ?", "answers": ["Twi"] },
-  { "sentence": "Aap kaise hain?", "answers": ["Hindi"] },
-  { "sentence": "Nǐ hǎo!", "answers": ["Chinese", "Mandarin", "Mandarin Chinese"] }
+  { "sentence": "Aap kaise hain?", "answers": ["Hindi"] }
 ];
 
 let currentSentenceIndex = 0;
