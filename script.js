@@ -82,7 +82,7 @@ const sentences = [
   { "sentence": "Apa kabar?", "answers": ["Indonesian"] },
   { "sentence": "Eyi be sɔ?", "answers": ["Twi"] },
   { "sentence": "Mihi placet legere", "answers": ["Latin"] },
-  { "sentence": "戲棚跤徛久就是你的", "answers": ["Taiwanese"."Taiwanese Taigi","Taigi","Minnan","Southern Min"] },
+  { "sentence": "戲棚跤徛久就是你的", "answers": ["Taiwanese"."Taiwanese Taigi","Taigi","Minnan","Southern Min"]},
   { "sentence": "Aap kaise hain?", "answers": ["Hindi"] }
 ];
 
