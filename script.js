@@ -42,7 +42,7 @@ const sentences = [
   { "sentence": "Molo!", "answers": ["Xhosa"] },
   { "sentence": "Sawubona!", "answers": ["Zulu"] },
   { "sentence": "สวัสดีค่ะ", "answers": ["Thai"] },
-  { "sentence": "Halò!", "answers": ["Scottish Gaelic"] },
+  { "sentence": "Halò!", "answers": ["Scottish Gaelic","Sangheili"] },
   { "sentence": "Góðan dag!", "answers": ["Icelandic"] },
   { "sentence": "வணக்கம்!", "answers": ["Tamil"] },
   { "sentence": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ!", "answers": ["Punjabi"] },
@@ -81,6 +81,7 @@ const sentences = [
   { "sentence": "Sabai di mai?", "answers": ["Lao"] },
   { "sentence": "Apa kabar?", "answers": ["Indonesian"] },
   { "sentence": "Eyi be sɔ?", "answers": ["Twi"] },
+  { "sentence": "Mihi placet legere", "answers": ["Latin"] },
   { "sentence": "Aap kaise hain?", "answers": ["Hindi"] }
 ];
 
