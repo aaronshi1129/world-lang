@@ -64,7 +64,7 @@ const sentences = [
   { "sentence": "Buenos días, amigo.", "answers": ["Spanish"] },
   { "sentence": "Magandang umaga!", "answers": ["Filipino", "Tagalog"] },
   { "sentence": "안녕히 계세요.", "answers": ["Korean"] },
-  { "sentence": "Konnichiwa!", "answers": ["Japanese"] },
+  { "sentence": "こんにちは!", "answers": ["Japanese"] },
   { "sentence": "Jó reggelt!", "answers": ["Hungarian"] },
   { "sentence": "Chào buổi sáng!", "answers": ["Vietnamese"] },
   { "sentence": "Mba'éichapa!", "answers": ["Guarani"] },
@@ -89,6 +89,7 @@ let score = 0;
 let timeLeft = 120; // 2 minutes
 let timerInterval;
 let questionNumber = 1;
+let availableSentences = [...sentences]; // Copy of the original sentences array
 
 const startPage = document.getElementById("startPage");
 const startButton = document.getElementById("startButton");
@@ -106,11 +107,18 @@ const medalImage = document.getElementById("medal");
 const questionNumberElement = document.getElementById("question-number");
 
 function loadSentence() {
-  const randomIndex = Math.floor(Math.random() * sentences.length);
-  currentSentenceIndex = randomIndex;
-  sentenceElement.textContent = sentences[currentSentenceIndex].sentence;
+  if (availableSentences.length === 0) {
+    availableSentences = [...sentences]; // Reset available sentences if all have been shown
+  }
+
+  const randomIndex = Math.floor(Math.random() * availableSentences.length);
+  currentSentenceIndex = sentences.findIndex(sentence => sentence.sentence === availableSentences[randomIndex].sentence);
+  sentenceElement.textContent = availableSentences[randomIndex].sentence;
   answerInput.value = "";
   resultElement.textContent = "";
+
+  // Remove the selected sentence from the available sentences
+  availableSentences.splice(randomIndex, 1);
 
   // Update question number display
   questionNumberElement.textContent = `Question: ${questionNumber}`;
