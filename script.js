@@ -1,5 +1,5 @@
 const sentences = [
-  { "sentence": "你好嗎？", "answers": ["Chinese", "Mandarin", "Mandarin Chinese"] },
+  { "sentence": "哈囉，你好嗎？", "answers": ["Chinese", "Mandarin", "Mandarin Chinese"] },
   { "sentence": "Hola", "answers": ["Spanish"] },
   { "sentence": "Bonjour", "answers": ["French"] },
   { "sentence": "Olá", "answers": ["Portuguese"] },
