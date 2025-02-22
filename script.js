@@ -271,11 +271,11 @@ function endQuiz() {
   let medal = "none";
   
   if (isQuizMode) {
-    if (score >= 20) medal = "gold";
-    else if (score >= 15) medal = "silver";
-    else if (score >= 10) medal = "bronze";
+    if (score >= 16) medal = "gold";
+    else if (score >= 12) medal = "silver";
+    else if (score >= 8) medal = "bronze";
     
-    message = score < 10 
+    message = score < 8 
       ? `Challenge completed! 👍You identified ${score} languages. Keep practicing!💪`
       : `🎊Congratulations!🎉 You identified ${score} languages and won a ${medal} medal!`;
   } else {
