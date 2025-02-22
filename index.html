@@ -1,24 +1,35 @@
 <html>
-
 <head>
   <title>World Languages Challenge</title>
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
-
 <body>
   <!-- Start Page -->
   <div id="startPage" class="container">
     <h1>World Languages Challenge</h1>
     <p>Welcome to the World Languages Challenge!</p>
     <p>Identify the language of the sentences displayed.</p>
-    <p>You will have 2 minutes to identify as many languages as possible.</p>
-    <p>Score 10 points or above to win a medal!</p>
-    <button id="startButton">Start</button>
+    <div class="mode-selection">
+      <h2>Select Mode:</h2>
+      <div class="mode-buttons">
+        <button id="quizMode" class="mode-button">
+          <h3>Quiz Mode</h3>
+          <p>2 minutes to identify as many languages as possible.</p>
+          <p>Score 10 points or above to win a medal!</p>
+        </button>
+        <button id="practiceMode" class="mode-button">
+          <h3>Practice Mode</h3>
+          <p>No time limit. See correct answers.</p>
+          <p>Perfect for learning!</p>
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- Quiz Area -->
   <div id="quiz-area" class="container" style="display:none;">
     <h1>World Languages Challenge</h1>
+    <p id="current-mode"></p>
     <p id="question-number">Question: 1</p>
     <p id="timer">Time: 2:00</p>
     <p id="score">Score: <span id="score-value">0</span></p>
@@ -34,6 +45,7 @@
       <span class="close-button">&times;</span>
       <img id="medal" src="" alt="Medal" style="width: 100px; height: auto;">
       <p id="modalMessage">Challenge completed!</p>
+      <button id="returnToStart">Return to Start</button>
     </div>
   </div>
 
@@ -43,5 +55,4 @@
 
   <script src="script.js"></script>
 </body>
-
 </html>
