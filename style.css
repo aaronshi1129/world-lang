@@ -142,6 +142,8 @@ button:hover {
   border-radius: 10px;
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 400px; /* Set a max-width for better control */
 }
 
 .close-button {
@@ -158,9 +160,35 @@ button:hover {
 }
 
 #medal {
-  width: 50px;
+  display: block; /* Change to block */
+  margin: 0 auto 20px; /* Center horizontally and add bottom margin */
+  width: 100px; /* Fixed width */
   height: auto;
-  margin-bottom: 10px;
+  object-fit: contain; /* Maintain aspect ratio */
+}
+
+#modalMessage {
+  margin: 15px 0;
+  font-size: 1.1em;
+  color: #333;
+  line-height: 1.4;
+}
+
+#returnToStart {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #73c7c7;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block;
+  width: 200px;
+  margin: 15px auto 0; /* Center the button */
+}
+
+#returnToStart:hover {
+  background-color: #a6f1e0;
 }
 
 footer {
@@ -229,18 +257,4 @@ footer {
   font-weight: bold;
   color: #495057;
   margin-bottom: 10px;
-}
-
-#returnToStart {
-  margin-top: 15px;
-  padding: 10px 20px;
-  background-color: #73c7c7;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-#returnToStart:hover {
-  background-color: #a6f1e0;
 }
