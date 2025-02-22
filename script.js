@@ -86,6 +86,12 @@ const sentences = [
   { "sentence": "Aap kaise hain?", "answers": ["Hindi"] }
 ];
 
+let isQuizMode = true;
+const currentModeElement = document.getElementById("current-mode");
+const quizModeButton = document.getElementById("quizMode");
+const practiceModeButton = document.getElementById("practiceMode");
+const returnToStartButton = document.getElementById("returnToStart");
+
 let currentSentenceIndex = 0;
 let score = 0;
 let timeLeft = 120; // 2 minutes
@@ -107,6 +113,38 @@ const modalMessage = document.getElementById("modalMessage");
 const closeButton = document.querySelector(".close-button");
 const medalImage = document.getElementById("medal");
 const questionNumberElement = document.getElementById("question-number");
+
+quizModeButton.addEventListener("click", () => {
+  isQuizMode = true;
+  startGame();
+});
+
+practiceModeButton.addEventListener("click", () => {
+  isQuizMode = false;
+  startGame();
+});
+
+function startGame() {
+  startPage.style.display = "none";
+  quizArea.style.display = "block";
+  currentModeElement.textContent = isQuizMode ? "Quiz Mode" : "Practice Mode";
+  
+  // Reset game state
+  score = 0;
+  questionNumber = 1;
+  scoreElement.textContent = "0";
+  availableSentences = [...sentences];
+  
+  if (isQuizMode) {
+    timeLeft = 120;
+    timerElement.style.display = "block";
+    startTimer();
+  } else {
+    timerElement.style.display = "none";
+  }
+  
+  loadSentence();
+}
 
 function loadSentence() {
   if (availableSentences.length === 0) {
@@ -160,27 +198,34 @@ function checkAnswer() {
   if (correctAnswers.some(answer => answer.toLowerCase() === userAnswer.toLowerCase())) {
     resultElement.innerHTML = `<span style="color: green;">✓ Correct!</span>`;
     score++;
-    // Trigger score animation
     scoreElement.classList.add("score-update");
     setTimeout(() => {
       scoreElement.classList.remove("score-update");
     }, 500);
   } else {
-    // Show the incorrect answer with an X and display the correct answers
-    let correctAnswersText = correctAnswers.join(' or ');
-    resultElement.innerHTML = `
-      <span style="color: red;">✗ Incorrect.</span><br>
-      <span style="font-size: 0.9em;">The correct answer was: ${correctAnswersText}</span>
-    `;
+    if (isQuizMode) {
+      resultElement.innerHTML = `<span style="color: red;">✗ Incorrect.</span>`;
+    } else {
+      let correctAnswersText = correctAnswers.join(' or ');
+      resultElement.innerHTML = `
+        <span style="color: red;">✗ Incorrect.</span><br>
+        <span style="font-size: 0.9em;">The correct answer was: ${correctAnswersText}</span>
+      `;
+    }
   }
 
   scoreElement.textContent = score;
   
-  // Wait 2 seconds before loading the next sentence
+  // Different timing for different modes
+  const nextQuestionDelay = isQuizMode ? 500 : 2000;
+  
   setTimeout(() => {
     loadSentence();
-  }, 2000);
+    answerInput.value = "";
+    answerInput.focus();
+  }, nextQuestionDelay);
 }
+  
 function updateTimer() {
   const minutes = Math.floor(timeLeft / 60);
   let seconds = timeLeft % 60;
@@ -199,74 +244,70 @@ function startTimer() {
 
 function endQuiz() {
   clearInterval(timerInterval);
-  sentenceElement.style.display = "none";
-  answerInput.style.display = "none";
-  submitButton.style.display = "none";
-  timerElement.style.display = "none";
-
-  let medal;
-  if (score >= 20) {
-    medal = "gold";
-  } else if (score >= 15) {
-    medal = "silver";
-  } else if (score >= 10) {
-    medal = "bronze";
-  } else {
-    medal = "none";
-  }
-
-  let medalImagePath = "";
-  switch (medal) {
-    case "gold":
-      medalImagePath = "https://alittlemoreenglish.weebly.com/uploads/2/6/6/3/26638990/gold-medal_orig.png";
-      break;
-    case "silver":
-      medalImagePath = "https://alittlemoreenglish.weebly.com/uploads/2/6/6/3/26638990/silver-medal_orig.png";
-      break;
-    case "bronze":
-      medalImagePath = "https://alittlemoreenglish.weebly.com/uploads/2/6/6/3/26638990/bronze-medal_orig.png";
-      break;
-    default:
-      medalImagePath = ""; // No medal image
-      break;
-  }
-
-  if (medalImagePath) {
-    medalImage.src = medalImagePath;
-    medalImage.alt = medal + " medal";
-  } else {
-    medalImage.style.display = "none"; // Hide the medal image if no medal is awarded
-  }
-
+  quizArea.style.display = "none";
+  
   let message;
-  if (score < 10) {
-    message = `Challenge completed! You successfully identified ${score} languages. 👍Keep practicing to improve your knowledge about world languages!💪`;
+  let medal = "none";
+  
+  if (isQuizMode) {
+    if (score >= 20) medal = "gold";
+    else if (score >= 15) medal = "silver";
+    else if (score >= 10) medal = "bronze";
+    
+    message = score < 10 
+      ? `Challenge completed! 👍You identified ${score} languages. Keep practicing!💪`
+      : `🎊Congratulations!🎉 You identified ${score} languages and won a ${medal} medal!`;
+  } else {
+    message = `💪Practice session completed! You identified ${score} languages correctly.👍`;
   }
-  else {
-    message = `Challenge completed! You successfully identified ${score} languages in the world. 🎊 Congratulations! 🎉You've won a ${medal.charAt(0).toUpperCase() + medal.slice(1)} medal.`;
-  }
+  
   modalMessage.textContent = message;
+  
+  // Show medal only in quiz mode
+  if (isQuizMode && medal !== "none") {
+    medalImage.src = getMedalImage(medal);
+    medalImage.style.display = "block";
+  } else {
+    medalImage.style.display = "none";
+  }
+  
   modal.style.display = "block";
 }
 
-closeButton.addEventListener("click", () => {
+function getMedalImage(medal) {
+  const baseUrl = "https://alittlemoreenglish.weebly.com/uploads/2/6/6/3/26638990/";
+  return `${baseUrl}${medal}-medal_orig.png`;
+}
+
+// Return to start handler
+returnToStartButton.addEventListener("click", () => {
   modal.style.display = "none";
+  startPage.style.display = "block";
+  resetGame();
 });
 
-submitButton.addEventListener("click", () => {
-  checkAnswer();
-});
+function resetGame() {
+  clearInterval(timerInterval);
+  score = 0;
+  timeLeft = 120;
+  questionNumber = 1;
+  availableSentences = [...sentences];
+  scoreElement.textContent = "0";
+  resultElement.textContent = "";
+  answerInput.value = "";
+}
 
-answerInput.addEventListener("keyup", function(event) {
-  if (event.key === "Enter") {
-    event.preventDefault();
-    checkAnswer();
+// Update timer to only run in quiz mode
+function updateTimer() {
+  if (!isQuizMode) return;
+  
+  const minutes = Math.floor(timeLeft / 60);
+  let seconds = timeLeft % 60;
+  seconds = seconds < 10 ? "0" + seconds : seconds;
+  timerElement.textContent = `Time: ${minutes}:${seconds}`;
+  timeLeft--;
+
+  if (timeLeft < 0) {
+    endQuiz();
   }
-});
-
-startButton.addEventListener("click", () => {
-  startPage.style.display = "none";
-  quizArea.style.display = "block";
-  loadSentence();
-  startTimer();
-});
+}
