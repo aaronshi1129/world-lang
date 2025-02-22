@@ -110,16 +110,18 @@ const questionNumberElement = document.getElementById("question-number");
 
 function loadSentence() {
   if (availableSentences.length === 0) {
-    availableSentences = [...sentences]; // Reset available sentences if all have been shown
+    availableSentences = [...sentences];
   }
 
   const randomIndex = Math.floor(Math.random() * availableSentences.length);
-  currentSentenceIndex = sentences.findIndex(sentence => sentence.sentence === availableSentences[randomIndex].sentence);
+  currentSentenceIndex = sentences.findIndex(sentence => 
+    sentence.sentence === availableSentences[randomIndex].sentence
+  );
   sentenceElement.textContent = availableSentences[randomIndex].sentence;
   answerInput.value = "";
-  resultElement.textContent = "";
+  resultElement.innerHTML = ""; // Clear the result
 
-  // Remove the selected sentence from the available sentences
+  // Remove the selected sentence from available sentences
   availableSentences.splice(randomIndex, 1);
 
   // Update question number display
@@ -127,13 +129,36 @@ function loadSentence() {
   questionNumber++;
 }
 
+// Update event listeners to prevent multiple submissions
+submitButton.addEventListener("click", () => {
+  if (!submitButton.disabled) {
+    submitButton.disabled = true;
+    checkAnswer();
+    setTimeout(() => {
+      submitButton.disabled = false;
+      answerInput.focus(); // Focus back on input for next question
+    }, 2000);
+  }
+});
+
+answerInput.addEventListener("keyup", function(event) {
+  if (event.key === "Enter" && !submitButton.disabled) {
+    event.preventDefault();
+    submitButton.disabled = true;
+    checkAnswer();
+    setTimeout(() => {
+      submitButton.disabled = false;
+      answerInput.focus(); // Focus back on input for next question
+    }, 2000);
+  }
+});
+
 function checkAnswer() {
   const userAnswer = answerInput.value.trim();
   const correctAnswers = sentences[currentSentenceIndex].answers;
-
+  
   if (correctAnswers.some(answer => answer.toLowerCase() === userAnswer.toLowerCase())) {
-    resultElement.textContent = "Correct!";
-    resultElement.style.color = "green";
+    resultElement.innerHTML = `<span style="color: green;">✓ Correct!</span>`;
     score++;
     // Trigger score animation
     scoreElement.classList.add("score-update");
@@ -141,14 +166,21 @@ function checkAnswer() {
       scoreElement.classList.remove("score-update");
     }, 500);
   } else {
-    resultElement.textContent = "Incorrect. Try again!";
-    resultElement.style.color = "red";
+    // Show the incorrect answer with an X and display the correct answers
+    let correctAnswersText = correctAnswers.join(' or ');
+    resultElement.innerHTML = `
+      <span style="color: red;">✗ Incorrect.</span><br>
+      <span style="font-size: 0.9em;">The correct answer was: ${correctAnswersText}</span>
+    `;
   }
 
   scoreElement.textContent = score;
-  loadSentence(); // Load the next sentence immediately after submission
+  
+  // Wait 2 seconds before loading the next sentence
+  setTimeout(() => {
+    loadSentence();
+  }, 2000);
 }
-
 function updateTimer() {
   const minutes = Math.floor(timeLeft / 60);
   let seconds = timeLeft % 60;
