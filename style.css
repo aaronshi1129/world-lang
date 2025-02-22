@@ -1,8 +1,10 @@
 body {
   font-family: 'Arial', sans-serif;
-  ackground-image: url('https://alittlemoreenglish.weebly.com/uploads/2/6/6/3/26638990/untitled-design-7_orig.png');
+  background-image: url('https://alittlemoreenglish.weebly.com/uploads/2/6/6/3/26638990/untitled-design-7_orig.png');
   background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
+  background-attachment: fixed;
   display: flex;
   flex-direction: column;
   justify-content: center;
